@@ -1,4 +1,4 @@
-/* loja_logico: */
+/* fabrica_logico: */
 
 CREATE TABLE CLIENTE (
     id_cliente INTEGER PRIMARY KEY,
