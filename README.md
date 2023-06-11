@@ -1,2 +1,2 @@
-# ModeloBdLoja
-Modelo de banco de dados de uma loja
+# ModeloBancoDeDadosFabrica
+Modelo de banco de dados de uma fabrica
