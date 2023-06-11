@@ -1,0 +1,119 @@
+/* loja_logico: */
+
+CREATE TABLE CLIENTE (
+    id_cliente INTEGER PRIMARY KEY,
+    nome VARCHAR,
+    cpf VARCHAR,
+    endereco VARCHAR,
+    telefone VARCHAR,
+    email VARCHAR
+);
+
+CREATE TABLE VENDA (
+    id_venda INTEGER PRIMARY KEY,
+    FK_CLIENTE_id_cliente INTEGER,
+    funcionario_vendendedor INTEGER,
+    funcionario_entregou INTEGER,
+    data DATE,
+    preco FLOAT
+);
+
+CREATE TABLE FUNCIONARIO (
+    id_funcionario INTEGER PRIMARY KEY,
+    cpf INTEGER,
+    nome VARCHAR,
+    data_nascimento DATE,
+    cargo VARCHAR,
+    salario INTEGER,
+    telefone VARCHAR,
+    email VARCHAR,
+    endereco VARCHAR,
+    UNIQUE (cpf, telefone, email)
+);
+
+CREATE TABLE LOTE (
+    id_lote INTEGER PRIMARY KEY,
+    FK_PRODUTO_id_produto INTEGER,
+    FK_PRODUCAO_id_producao INTEGER,
+    FK_VENDA_id_venda INTEGER,
+    data_fabricacao DATE,
+    data_validade DATE,
+    quantidade_produto INTEGER,
+    descricao VARCHAR,
+    preco INTEGER
+);
+
+CREATE TABLE PRODUTO (
+    id_produto INTEGER PRIMARY KEY,
+    nome VARCHAR,
+    preco_unitario FLOAT,
+    descricao VARCHAR
+);
+
+CREATE TABLE PRODUCAO (
+    id_producao INTEGER PRIMARY KEY,
+    data DATE
+);
+
+CREATE TABLE MATERIA_PRIMA (
+    id_materia_prima INTEGER PRIMARY KEY,
+    nome VARCHAR,
+    quantidade INTEGER,
+    unidade_medida VARCHAR,
+    preco_unitario FLOAT
+);
+
+CREATE TABLE LISTA_FUNCIONARIOS (
+    FK_FUNCIONARIO_id_funcionario INTEGER,
+    FK_PRODUCAO_id_producao INTEGER
+);
+
+CREATE TABLE LISTA_MATERIA_PRIMA (
+    FK_PRODUCAO_id_producao INTEGER,
+    FK_MATERIA_PRIMA_id_materia_prima INTEGER
+);
+ 
+ALTER TABLE VENDA ADD CONSTRAINT FK_VENDA_2
+    FOREIGN KEY (FK_CLIENTE_id_cliente)
+    REFERENCES CLIENTE (id_cliente)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE VENDA ADD CONSTRAINT FK_VENDA_3
+    FOREIGN KEY (funcionario_vendendedor, funcionario_entregou)
+    REFERENCES FUNCIONARIO (id_funcionario, id_funcionario)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE LOTE ADD CONSTRAINT FK_LOTE_2
+    FOREIGN KEY (FK_PRODUTO_id_produto)
+    REFERENCES PRODUTO (id_produto)
+    ON DELETE CASCADE;
+ 
+ALTER TABLE LOTE ADD CONSTRAINT FK_LOTE_3
+    FOREIGN KEY (FK_PRODUCAO_id_producao)
+    REFERENCES PRODUCAO (id_producao)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE LOTE ADD CONSTRAINT FK_LOTE_4
+    FOREIGN KEY (FK_VENDA_id_venda)
+    REFERENCES VENDA (id_venda)
+    ON DELETE CASCADE;
+ 
+ALTER TABLE LISTA_FUNCIONARIOS ADD CONSTRAINT FK_LISTA_FUNCIONARIOS_1
+    FOREIGN KEY (FK_FUNCIONARIO_id_funcionario)
+    REFERENCES FUNCIONARIO (id_funcionario)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE LISTA_FUNCIONARIOS ADD CONSTRAINT FK_LISTA_FUNCIONARIOS_2
+    FOREIGN KEY (FK_PRODUCAO_id_producao)
+    REFERENCES PRODUCAO (id_producao)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE LISTA_MATERIA_PRIMA ADD CONSTRAINT FK_LISTA_MATERIA_PRIMA_1
+    FOREIGN KEY (FK_PRODUCAO_id_producao)
+    REFERENCES PRODUCAO (id_producao)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE LISTA_MATERIA_PRIMA ADD CONSTRAINT FK_LISTA_MATERIA_PRIMA_2
+    FOREIGN KEY (FK_MATERIA_PRIMA_id_materia_prima)
+    REFERENCES MATERIA_PRIMA (id_materia_prima)
+    ON DELETE RESTRICT;
